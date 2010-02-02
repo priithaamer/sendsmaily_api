@@ -1,0 +1,44 @@
+Sendsmaily API plugin for Ruby on Rails
+=======================================
+
+This is a Ruby wrapper for [Sendsmaily API](http://sendsmaily.com/).
+
+Install
+-------
+
+    script/plugin install git://github.com/priith/sendsmaily_api.git
+
+Use generator to generate necessary configuration files
+
+    script/generate sendsmaily
+
+This creates configuration file in your `RAILS_ROOT/config/initializers/sendsmaily.rb` where you need to configure at
+least your Sendsmaily account name and API key.
+
+    Sendsmaily.configure do |config|
+      config.account = 'YOUR_ACCOUNT'
+      config.api_key = 'YOUR_API_KEY'
+    end
+
+Optional configuration parameters:
+
+* `url` -- full url to Sendsmaily service, if not set, it will be guessed by `account` configuration value. Useful to override for testing purposes.
+* `logger` -- set Ruby logger instance, such as `Logger.new('/var/log/sendsmaily.log')`. By default it will log to `RAILS_ROOT/log/sendsmaily_<Rails.env>.log`
+* `recipient` -- if set, all mail will be sent to this e-mail address. Useful for testing, so one do not send too much spam messages during testing.
+
+Usage
+-----
+
+Sending bulk messages using Sendsmaily API is similar to using ActionMailer
+
+    class SantaClausMailer < Sendsmaily::Mailer
+      def gift_message
+        responder 1
+        add_recipient 'santa-claus@example.com', {:key1 => 'Value', :key2 => 'Value'}
+        add_recipient 'fake-santa@example.com', {:key1 => 'Value', :key2 => 'Value'}
+      end
+    end
+
+To send campaign messages
+
+    CampaignMailer.deliver_gift_message

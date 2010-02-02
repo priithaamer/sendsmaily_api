@@ -1,0 +1,8 @@
+Description:
+    Copies necessary Sendsmaily API configuration files to Rails application directory
+
+Example:
+    ./script/generate sendsmaily
+
+    This will create:
+        config/initializers/sendsmaily.rb
